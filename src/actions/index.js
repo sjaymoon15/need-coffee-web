@@ -1,20 +1,17 @@
-import { SIGN_IN } from './types';
+import { AUTH_USER, AUTH_ERROR } from './types';
 import Api from '../api';
 import Cookies from 'universal-cookie';
 import history from '../history';
 
 const cookies = new Cookies();
 
-export const signin = ({ email, password }) => {
-  return async dispatch => {
-    try {
-      const response = await Api.post('/signin', { email, password });
-      cookies.set('token', response.data.token, { path: '/' });
-      dispatch({ type: SIGN_IN, payload: response.data.token });
-      // history.push('/groups');
-      console.log('sign in dispatched and cookie saved');
-    } catch (err) {
-      console.log('error during sign in');
-    }
-  };
+export const signin = ({ email, password }) => async dispatch => {
+  try {
+    const response = await Api.post('/signin', { email, password });
+    dispatch({ type: AUTH_USER, payload: response.data.token });
+    cookies.set('token', response.data.token, { path: '/' });
+    history.push('/groups');
+  } catch (err) {
+    dispatch({ type: AUTH_ERROR, payload: 'Invalid login credentials' });
+  }
 };
