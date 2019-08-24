@@ -1,4 +1,5 @@
 import React from 'react';
+import requireAuth from '../auth/requireAuth';
 
 class GroupList extends React.Component {
   render() {
@@ -6,4 +7,4 @@ class GroupList extends React.Component {
   }
 }
 
-export default GroupList;
+export default requireAuth(GroupList);
