@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { Link } from 'react-router-dom';
 import { signup } from '../../actions';
 
-class SignUp extends React.Component {
+class SignUp extends Component {
   onSubmit = formProps => {
     this.props.signup(formProps);
   };

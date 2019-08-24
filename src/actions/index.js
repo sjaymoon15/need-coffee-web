@@ -33,3 +33,12 @@ export const signup = formProps => async dispatch => {
     dispatch({ type: AUTH_ERROR, payload: 'Email in use' });
   }
 };
+
+export const signout = () => {
+  cookies.remove('token');
+
+  return {
+    type: AUTH_USER,
+    payload: ''
+  };
+};
