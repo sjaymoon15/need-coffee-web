@@ -1,4 +1,4 @@
-import { AUTH_USER, AUTH_ERROR } from './types';
+import { AUTH_USER, AUTH_ERROR, FETCH_GROUPS } from './types';
 import Api from '../api';
 import Cookies from 'universal-cookie';
 import history from '../history';
@@ -36,9 +36,17 @@ export const signup = formProps => async dispatch => {
 
 export const signout = () => {
   cookies.remove('token');
-
   return {
     type: AUTH_USER,
     payload: ''
   };
 };
+
+export const fetchGroups = () => async dispatch => {
+  const response = await Api.get('/groups');
+  dispatch({ type: FETCH_GROUPS, payload: response.data });
+};
+
+// export const createGroup = formProps => async dispatch => {
+
+// };

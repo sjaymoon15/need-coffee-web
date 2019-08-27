@@ -8,25 +8,21 @@ class Header extends Component {
     if (!this.props.auth) {
       return (
         <Link to="/signin" className="item">
-          Sign In
+          <i className="sign in alternate icon"></i>
         </Link>
       );
     }
     return (
-      <button
-        onClick={this.props.signout}
-        className="ui button"
-        style={{ margin: '5px' }}
-      >
-        Sign Out
-      </button>
+      <Link onClick={this.props.signout} className="item" to="/signin">
+        <i className="sign out alternate icon"></i>
+      </Link>
     );
   }
   render() {
     return (
       <div className="ui secondary pointing menu">
         <Link to="/" className="item">
-          Need Coffee?
+          <i className="coffee icon"></i>
         </Link>
         <div className="right menu">{this.renderAuthButton()}</div>
       </div>
@@ -34,9 +30,9 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return { auth: state.auth.authenticated };
-}
+};
 
 export default connect(
   mapStateToProps,

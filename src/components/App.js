@@ -2,9 +2,10 @@ import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import Header from './Header';
 import history from '../history';
-import GroupList from './groups/GroupList';
 import SignIn from './auth/SignIn';
 import SignUp from './auth/SignUp';
+import GroupPage from './group/GroupPage';
+import GroupCreate from './group/GroupCreate';
 
 const App = () => {
   return (
@@ -13,9 +14,10 @@ const App = () => {
         <div>
           <Header />
           <Switch>
-            <Route path="/" exact component={GroupList} />
+            <Route path="/" exact component={GroupPage} />
             <Route path="/signin" exact component={SignIn} />
             <Route path="/signup" exact component={SignUp} />
+            <Route path="/groups/create" exact component={GroupCreate} />
           </Switch>
         </div>
       </Router>
