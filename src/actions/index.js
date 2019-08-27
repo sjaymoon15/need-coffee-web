@@ -47,6 +47,4 @@ export const fetchGroups = () => async dispatch => {
   dispatch({ type: FETCH_GROUPS, payload: response.data });
 };
 
-// export const createGroup = formProps => async dispatch => {
-
-// };
+export const createGroup = formProps => async dispatch => {};
