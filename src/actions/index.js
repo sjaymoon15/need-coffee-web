@@ -1,4 +1,4 @@
-import { AUTH_USER, AUTH_ERROR, FETCH_GROUPS } from './types';
+import { AUTH_USER, AUTH_ERROR, FETCH_GROUPS, SEARCH_USER } from './types';
 import Api from '../api';
 import Cookies from 'universal-cookie';
 import history from '../history';
@@ -40,6 +40,12 @@ export const signout = () => {
     type: AUTH_USER,
     payload: ''
   };
+};
+
+export const searchUser = email => async dispatch => {
+  console.log(email);
+  const response = await Api.post('/user', { email });
+  dispatch({ type: SEARCH_USER, payload: response.data });
 };
 
 export const fetchGroups = () => async dispatch => {
