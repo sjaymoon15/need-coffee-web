@@ -1,4 +1,11 @@
-import { AUTH_USER, AUTH_ERROR, FETCH_GROUPS, SEARCH_USER } from './types';
+import {
+  AUTH_USER,
+  AUTH_ERROR,
+  FETCH_GROUPS,
+  ADD_MEMBER,
+  REMOVE_MEMBER,
+  CREATE_GROUP
+} from './types';
 import Api from '../api';
 import Cookies from 'universal-cookie';
 import history from '../history';
@@ -42,10 +49,18 @@ export const signout = () => {
   };
 };
 
-export const searchUser = email => async dispatch => {
-  console.log(email);
-  const response = await Api.post('/user', { email });
-  dispatch({ type: SEARCH_USER, payload: response.data });
+export const addMember = email => {
+  return {
+    type: ADD_MEMBER,
+    payload: email
+  };
+};
+
+export const removeMember = email => {
+  return {
+    type: REMOVE_MEMBER,
+    payload: email
+  };
 };
 
 export const fetchGroups = () => async dispatch => {
@@ -53,4 +68,15 @@ export const fetchGroups = () => async dispatch => {
   dispatch({ type: FETCH_GROUPS, payload: response.data });
 };
 
-export const createGroup = formProps => async dispatch => {};
+export const createGroup = formProps => async dispatch => {
+  try {
+    const response = await Api.post('/groups', formProps);
+    dispatch({ type: CREATE_GROUP, payload: response.data });
+    history.push(`/groups/${response.data.name}`);
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR,
+      payload: 'Error occurred while creating a group'
+    });
+  }
+};

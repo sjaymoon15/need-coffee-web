@@ -6,6 +6,7 @@ import SignIn from './auth/SignIn';
 import SignUp from './auth/SignUp';
 import GroupPage from './group/GroupPage';
 import GroupCreate from './group/GroupCreate';
+import GroupDetail from './group/GroupDetail';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
             <Route path="/signin" exact component={SignIn} />
             <Route path="/signup" exact component={SignUp} />
             <Route path="/groups/create" exact component={GroupCreate} />
+            <Route path="/groups/:name" exact componnent={GroupDetail} />
           </Switch>
         </div>
       </Router>

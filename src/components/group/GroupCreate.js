@@ -2,24 +2,43 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
-import { createGroup, searchUser } from '../../actions';
+import { createGroup, addMember, removeMember } from '../../actions';
 
 class GroupCreate extends Component {
   handleFormSubmit = formProps => {
+    formProps.potentialMembers = this.props.potentialMembers;
     this.props.createGroup(formProps);
   };
 
-  handleInputChange = event => {
-    const inputValue = event.target.value;
-    if (inputValue && inputValue.length > 5) {
-      console.log(event.target.value);
-      this.props.searchUser(event.target.value);
+  handleInputSubmit = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.props.addMember(event.target.value);
+      event.target.value = '';
     }
   };
 
-  renderSearchResults() {
-    return this.props.foundUsers.map(user => {
-      return <div key={user._id}>{user.email}</div>;
+  removeMember(member) {
+    this.props.removeMember(member);
+  }
+
+  renderMembers() {
+    return this.props.potentialMembers.map(member => {
+      return (
+        <div key={member} className="item">
+          <div className="right floated content">
+            <div
+              className="ui button"
+              onClick={() => this.removeMember(member)}
+            >
+              Remove
+            </div>
+          </div>
+          <div className="content" style={{ padding: '10px 0' }}>
+            {member}
+          </div>
+        </div>
+      );
     });
   }
 
@@ -40,16 +59,20 @@ class GroupCreate extends Component {
             />
           </div>
 
-          <div className="ui search">
+          <div className="required field">
+            <label>Members</label>
             <input
-              onChange={this.handleInputChange}
-              className="prompt"
+              name="members"
               type="text"
-              placeholder="Find users with email..."
+              component="input"
+              placeholder="Put an email and hit Enter to add"
+              onKeyDown={this.handleInputSubmit}
             />
-            <div className="results">{this.renderSearchResults()}</div>
           </div>
-          {this.renderSearchResults()}
+
+          <div className="ui middle aligned divided list">
+            {this.renderMembers()}
+          </div>
 
           <button
             type="submit"
@@ -65,14 +88,13 @@ class GroupCreate extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state.user.foundUsers);
-  return { foundUsers: state.user.foundUsers };
+  return { potentialMembers: state.group.potentialMembers };
 }
 
 export default compose(
   connect(
     mapStateToProps,
-    { createGroup, searchUser }
+    { createGroup, addMember, removeMember }
   ),
   reduxForm({ form: 'createGroup' })
 )(GroupCreate);
