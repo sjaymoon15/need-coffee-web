@@ -4,7 +4,8 @@ import {
   FETCH_GROUPS,
   ADD_MEMBER,
   REMOVE_MEMBER,
-  CREATE_GROUP
+  CREATE_GROUP,
+  ADD_MEMBER_ERROR
 } from './types';
 import Api from '../api';
 import Cookies from 'universal-cookie';
@@ -49,11 +50,22 @@ export const signout = () => {
   };
 };
 
-export const addMember = email => {
-  return {
-    type: ADD_MEMBER,
-    payload: email
-  };
+export const addMember = email => async dispatch => {
+  try {
+    const user = await Api.get(`/users/${email}`);
+    dispatch({
+      type: ADD_MEMBER,
+      payload: user
+    });
+  } catch (err) {
+    dispatch({
+      type: ADD_MEMBER_ERROR,
+      payload: {
+        email,
+        error: `Can't find the user email`
+      }
+    });
+  }
 };
 
 export const removeMember = email => {

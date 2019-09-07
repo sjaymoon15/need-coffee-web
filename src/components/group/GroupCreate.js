@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
 import { createGroup, addMember, removeMember } from '../../actions';
+import './GroupCreate.css';
 
 class GroupCreate extends Component {
   handleFormSubmit = formProps => {
-    formProps.potentialMembers = this.props.potentialMembers;
+    formProps.members = this.props.potentialMembers;
     this.props.createGroup(formProps);
   };
 
@@ -18,24 +19,30 @@ class GroupCreate extends Component {
     }
   };
 
-  removeMember(member) {
-    this.props.removeMember(member);
+  removeMember(email) {
+    this.props.removeMember(email);
   }
 
   renderMembers() {
     return this.props.potentialMembers.map(member => {
       return (
-        <div key={member} className="item">
+        <div key={member.email} className="item">
           <div className="right floated content">
             <div
               className="ui button"
-              onClick={() => this.removeMember(member)}
+              className="ui basic button"
+              onClick={() => this.removeMember(member.email)}
             >
               Remove
             </div>
           </div>
-          <div className="content" style={{ padding: '10px 0' }}>
-            {member}
+          <div
+            className={'content' + (member.error ? ' gc-error' : '')}
+            style={{ padding: '10px 0' }}
+          >
+            {member.error
+              ? member.email + ': EMAIL NOT FOUND. PLEASE REMOVE.'
+              : member.email}
           </div>
         </div>
       );
@@ -88,6 +95,7 @@ class GroupCreate extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state.group.potentialMembers);
   return { potentialMembers: state.group.potentialMembers };
 }
 

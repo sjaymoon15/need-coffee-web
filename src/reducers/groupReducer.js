@@ -1,4 +1,9 @@
-import { FETCH_GROUPS, ADD_MEMBER, REMOVE_MEMBER } from '../actions/types';
+import {
+  FETCH_GROUPS,
+  ADD_MEMBER,
+  REMOVE_MEMBER,
+  ADD_MEMBER_ERROR
+} from '../actions/types';
 
 const INITIAL_STATE = {
   groups: [],
@@ -12,13 +17,18 @@ export default (state = INITIAL_STATE, action) => {
     case ADD_MEMBER:
       return {
         ...state,
-        potentialMembers: [...state.potentialMembers, action.payload]
+        potentialMembers: [...state.potentialMembers, action.payload.data]
+      };
+    case ADD_MEMBER_ERROR:
+      return {
+        ...state,
+        potentialMembers: [...state.potentialMembers, action.payload.data]
       };
     case REMOVE_MEMBER:
       return {
         ...state,
         potentialMembers: state.potentialMembers.filter(
-          member => member !== action.payload
+          member => member.email !== action.payload
         )
       };
     default:
