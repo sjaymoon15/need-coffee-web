@@ -5,7 +5,8 @@ import {
   ADD_MEMBER,
   REMOVE_MEMBER,
   CREATE_GROUP,
-  ADD_MEMBER_ERROR
+  ADD_MEMBER_ERROR,
+  FILTER_MEMBER
 } from './types';
 import Api from '../api';
 import Cookies from 'universal-cookie';
@@ -91,4 +92,12 @@ export const createGroup = formProps => async dispatch => {
       payload: 'Error occurred while creating a group'
     });
   }
+};
+
+export const filterMembersForGroup = potentialMembers => {
+  const filteredMembers = potentialMembers.filter(member => !member.error);
+  return {
+    type: FILTER_MEMBER,
+    payload: filteredMembers
+  };
 };

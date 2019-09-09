@@ -2,7 +2,8 @@ import {
   FETCH_GROUPS,
   ADD_MEMBER,
   REMOVE_MEMBER,
-  ADD_MEMBER_ERROR
+  ADD_MEMBER_ERROR,
+  FILTER_MEMBER
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -30,6 +31,12 @@ export default (state = INITIAL_STATE, action) => {
         potentialMembers: state.potentialMembers.filter(
           member => member.email !== action.payload
         )
+      };
+
+    case FILTER_MEMBER:
+      return {
+        ...state,
+        potentialMembers: action.payload
       };
     default:
       return state;

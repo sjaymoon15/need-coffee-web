@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { compose } from 'redux';
-import { createGroup, addMember, removeMember } from '../../actions';
+import * as actions from '../../actions';
 import './GroupCreate.css';
 
 class GroupCreate extends Component {
   handleFormSubmit = formProps => {
+    const potentialMembers = this.props.potentialMembers;
+    console.log(potentialMembers);
+    this.props.filterMembersForGroup(potentialMembers);
+    console.log(this.props.potentialMembers);
     formProps.members = this.props.potentialMembers;
     this.props.createGroup(formProps);
   };
@@ -41,7 +45,8 @@ class GroupCreate extends Component {
             style={{ padding: '10px 0' }}
           >
             {member.error
-              ? member.email + ': EMAIL NOT FOUND. PLEASE REMOVE.'
+              ? member.email +
+                ': EMAIL NOT FOUND. WILL NOT BE INCLUDED IN THE TEAM.'
               : member.email}
           </div>
         </div>
@@ -102,7 +107,7 @@ function mapStateToProps(state) {
 export default compose(
   connect(
     mapStateToProps,
-    { createGroup, addMember, removeMember }
+    actions
   ),
   reduxForm({ form: 'createGroup' })
 )(GroupCreate);
